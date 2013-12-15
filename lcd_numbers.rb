@@ -2,144 +2,115 @@
 
 require 'optparse'
 
-ZERO = [
-  ' - ',
-  '| |',
-  '   ',
-  '| |',
-  ' - '
-]
-
-ONE = [
-  '  ',
-  ' |',
-  '  ',
-  ' |',
-  '  '
-]
-
-TWO = [
-  ' - ',
-  '  |',
-  ' - ',
-  '|  ',
-  ' - '
-]
-
-THREE = [
-  ' - ',
-  '  |',
-  ' - ',
-  '  |',
-  ' - '
-]
-
-FOUR = [
-  '   ',
-  '| |',
-  ' - ',
-  '  |',
-  '   '
-]
-
-FIVE = [
-  ' - ',
-  '|  ',
-  ' - ',
-  '  |',
-  ' - '
-]
-
-SIX = [
-  ' - ',
-  '|  ',
-  ' - ',
-  '| |',
-  ' - '
-]
-
-SEVEN = [
-  ' - ',
-  '  |',
-  '   ',
-  '  |',
-  '   '
-]
-
-EIGHT = [
-  ' - ',
-  '| |',
-  ' - ',
-  '| |',
-  ' - '
-]
-
-NINE = [
-  ' - ',
-  '| |',
-  ' - ',
-  '  |',
-  ' - '
-]
+ROWS = 5
+COLS = 3
 
 NUMBERS = {
-  0 => ZERO,
-  1 => ONE,
-  2 => TWO,
-  3 => THREE,
-  4 => FOUR,
-  5 => FIVE,
-  6 => SIX,
-  7 => SEVEN,
-  8 => EIGHT,
-  9 => NINE
+  '0' => [
+    ' — ',
+    '| |',
+    '   ',
+    '| |',
+    ' — '
+  ],
+
+  '1' => [
+    '—  ',
+    ' | ',
+    ' | ',
+    ' | ',
+    '———'
+  ],
+
+  '2' => [
+    ' — ',
+    '  |',
+    ' — ',
+    '|  ',
+    ' — '
+  ],
+
+  '3' => [
+    ' — ',
+    '  |',
+    ' — ',
+    '  |',
+    ' — '
+  ],
+
+  '4'  => [
+    '| |',
+    '| |',
+    ' —|',
+    '  |',
+    '  |'
+  ],
+
+  '5' => [
+    ' — ',
+    '|  ',
+    ' — ',
+    '  |',
+    ' — '
+  ],
+
+  '6' => [
+    ' — ',
+    '|  ',
+    ' — ',
+    '| |',
+    ' — '
+  ],
+
+  '7' => [
+    ' — ',
+    '  |',
+    '  |',
+    '  |',
+    '  |'
+  ],
+
+  '8' => [
+    ' — ',
+    '| |',
+    ' — ',
+    '| |',
+    ' — '
+  ],
+
+  '9' => [
+    ' — ',
+    '| |',
+    ' — ',
+    '  |',
+    ' — '
+  ]
 }
 
 ############################################
 
 def build_lcd_numbers(input)
-  lcd_numbers = []
-  input.chars.each_with_index do |char, index|
-    lcd_numbers << NUMBERS[char.to_i]
-  end
-  lcd_numbers
-end
-
-def scale_horizontal(lcd_numbers, options)
-  lcd_numbers.each do |array|
-    array.each do |val|
-      val.gsub!(/\s/, ' ' * options[:size])
-      val.gsub!(/-/, '-' * options[:size])
+  [].tap do |lcd_numbers|
+    input.length.times do |index|
+      lcd_numbers << NUMBERS[input[index]]
     end
   end
-end
-
-def scale_vertical(lcd_numbers, options)
-  lcd_numbers.each do |array|
-    array.insert(1, array[1].dup)
-    array.insert(4, array[4].dup)
-  end
-end
-
-def scale_lcd_numbers(lcd_numbers, options)
-  scale_horizontal(lcd_numbers, options)
-  scale_vertical(lcd_numbers, options)
 end
 
 def print_lcd_numbers(lcd_numbers, options)
-  scale_lcd_numbers(lcd_numbers, options)
-
-  puts lcd_numbers.inspect
-  
-  num_rows    = ZERO.size * options[:size]
-  num_columns = lcd_numbers.size * options[:size]
+  num_rows    = ROWS
+  num_columns = lcd_numbers.size
 
   num_rows.times do |row|
-    num_columns.times do |column|
-      print lcd_numbers[column][row]
-      print '  ' * options[:size]
+    options[:size].times do
+      num_columns.times do |column|
+        lcd_numbers[column][row].chars.each do |segment|
+          options[:size].times { putc segment }
+        end
+        options[:size].times { putc ' ' }
+      end
+      puts
     end
-    puts
   end
 end
 
