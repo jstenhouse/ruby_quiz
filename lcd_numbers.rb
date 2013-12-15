@@ -3,7 +3,6 @@
 require 'optparse'
 
 ROWS = 5
-COLS = 3
 
 NUMBERS = {
   '0' => [
