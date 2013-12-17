@@ -2,8 +2,6 @@
 
 require 'optparse'
 
-ROWS = 5
-
 NUMBERS = {
   '0' => [
     ' — ',
@@ -97,7 +95,7 @@ def build_lcd_numbers(input)
 end
 
 def print_lcd_numbers(lcd_numbers, options)
-  num_rows    = ROWS
+  num_rows    = lcd_numbers[0].size
   num_columns = lcd_numbers.size
 
   num_rows.times do |row|
